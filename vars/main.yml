@@ -1,0 +1,6 @@
+---
+# vars file for ansible-nginx
+nginx_fastcgi_file: "/etc/nginx/fastcgi_params"
+nginx_conf_file: "/etc/nginx/nginx.conf"
+nginx_default_vhost_file: "/etc/nginx/sites-available/default"
+nginx_default_vhost_symlink_file: "/etc/nginx/sites-enabled/default"

@@ -1,0 +1,41 @@
+---
+
+# Usage of LVM
+- include: nginx-lvm.yml
+  when: ansible_distribution == 'Ubuntu' and (ansible_distribution_release == 'trusty' or ansible_distribution_release == 'xenial') and nginx_use_lvm == 'true'
+
+# Set up nginx internal mirror
+- include: nginx-set-nginx-repository.yml
+  when: ansible_distribution == 'Ubuntu' and (ansible_distribution_release == 'trusty' or ansible_distribution_release == 'xenial') and nginx_mirrored_version == 'true'
+
+# nginx specific version (trusty)
+- name: NGINX | Install specific nginx version (trusty)
+  apt:  name=nginx={{ nginx_version }} update_cache=yes state=present
+  when: nginx_version != "latest" and ansible_distribution_release == 'trusty'
+
+# nginx specific version (xenial)
+- name: NGINX | Install specific nginx version (xenial)
+  apt:  name=nginx={{ nginx_version }} update_cache=yes state=present
+  when: nginx_version != "latest" and ansible_distribution_release == 'xenial'
+  ignore_errors: yes
+
+# nginx latest version (trusty)
+- name: NGINX | Install latest nginx version (trusty)
+  apt:  name=nginx update_cache=yes state=latest
+  when: nginx_version == "latest" and ansible_distribution_release == 'trusty'
+
+# nginx latest version (xenial)
+- name: NGINX | Install latest nginx version (xenial)
+  apt:  name=nginx update_cache=yes state=latest
+  when: nginx_version == "latest" and ansible_distribution_release == 'xenial'
+  ignore_errors: yes
+
+# nginx securisation
+- name: NGINX | Securisation nginx
+  include : ./nginx-securise.yml
+
+# upload default vhost
+- name: NGINX | Upload default vhost
+  template: src="nginx_default.tpl" dest="{{ nginx_default_vhost_file }}" owner=root mode=0644
+  notify:
+    - restart nginx

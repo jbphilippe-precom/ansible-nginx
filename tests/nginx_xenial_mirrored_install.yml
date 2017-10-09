@@ -1,0 +1,7 @@
+- name: Deploy NGINX Xenial Mirrored Version
+  hosts: r2x01
+  become: yes
+  roles:
+    - ../ansible-nginx
+  vars:
+    nginx_mirrored_version: "true"

@@ -1,0 +1,6 @@
+---
+- name: NGINX | Nginx Package Key
+  apt_key: data={{ nginx_mirrored_pubkey }} state=present
+
+- name: NGINX | Nginx APT repository
+  apt_repository: repo='deb [arch=amd64] http://mirror.services.local/nginx/ {{ ansible_distribution_release }} nginx' state=present

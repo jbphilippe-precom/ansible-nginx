@@ -1,0 +1,14 @@
+---
+# task file for nginx_testing.yml
+
+- name: NGINX | Is Nginx listening ?
+  wait_for: port={{ nginx_listen_port | default(80) }}
+            delay=2
+            timeout=10
+
+- shell: nginx -v
+  register: nginx_version
+  changed_when: False
+
+- debug:
+    var: nginx_version.stderr

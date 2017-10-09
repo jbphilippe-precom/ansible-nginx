@@ -1,0 +1,17 @@
+---
+- name: NGINX | Create Directory wich are not present in mirrored versions
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    mode: 0755
+  with_items:
+    - "/etc/nginx/sites-available"
+    - "/etc/nginx/sites-enabled"
+  when: nginx_mirrored_version == 'true'
+
+- name: NGINX | Securise nginx configuration file.
+  template: src="nginx_conf.tpl" dest="{{ nginx_conf_file }}" owner=root mode=0644
+
+- name: NGINX | Disable headers
+  template: src="fastcgi_params.tpl" dest="{{ nginx_fastcgi_file }}" owner=root mode=0644

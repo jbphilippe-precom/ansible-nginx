@@ -1,0 +1,7 @@
+- name: Deploy NGINX Trusty Mirrored Version
+  hosts: r2t01
+  become: yes
+  roles:
+    - ../ansible-nginx
+  vars:
+    nginx_mirrored_version: "true"

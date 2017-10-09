@@ -1,0 +1,5 @@
+- name: Deploy NGINX
+  hosts: r1t01
+  become: yes
+  roles:
+    - ../ansible-nginx

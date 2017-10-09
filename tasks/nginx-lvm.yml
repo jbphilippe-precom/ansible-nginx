@@ -1,0 +1,10 @@
+---
+
+- name: NGINX | Create nginx LV
+  lvol: vg={{ nginx_vg_name }} lv={{ nginx_lv_name }} size={{ nginx_lv_size }}
+
+- name: NGINX | Create ext4 filesystem for nginx
+  filesystem: fstype=ext4 dev=/dev/{{ nginx_vg_name }}/{{ nginx_lv_name }}
+
+- name: NGINX | Create mounpoint
+  mount: name={{ nginx_data_dir }} src=/dev/mapper/{{ nginx_vg_name }}-{{ nginx_lv_name }} fstype=ext4 state=mounted
